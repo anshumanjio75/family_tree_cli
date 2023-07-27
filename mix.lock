@@ -1,3 +1,4 @@
 %{
   "ex_cli": {:hex, :ex_cli, "0.1.6", "30f97ef0751c75863c669cf34ebb689a5a3ebf9dafd2e73739f173fbd7561a53", [:mix], [], "hexpm", "9b6e4e89f457f6805ae47a0fc0004bae804d894c85976dfd5b47330737dccf7b"},
+  "memento": {:hex, :memento, "0.3.2", "38cfc8ff9bcb1adff7cbd0f3b78a762636b86dff764729d1c82d0464c539bdd0", [:mix], [], "hexpm", "25cf691a98a0cb70262f4a7543c04bab24648cb2041d937eb64154a8d6f8012b"},
 }
