@@ -1,21 +1,21 @@
 # FamilyTreeCli
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `family_tree_cli` to your list of dependencies in `mix.exs`:
 
 ```elixir
-def deps do
-  [
-    {:family_tree_cli, "~> 0.1.0"}
-  ]
-end
+**Run**
+mix escript.build
+__________________________________________________
+Add:
+
+./family-tree add relationship daughter
+./family-tree add person mithu
+./family-tree add relationship father
+
+Connect:
+./family-tree connect anshu as son of aditya
+./family-tree connect mithu as daughter of ruma 
+
+Query:
+./family-tree daughter of ruma
+./family-tree count daughters of ruma
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/family_tree_cli>.
-

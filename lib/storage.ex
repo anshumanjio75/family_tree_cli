@@ -34,7 +34,6 @@ defmodule FamilyTree.Storage do
       |> print_connections()
 
       Memento.Query.select(Connection, guards)
-      |> IO.inspect(label: "select")
       |> Enum.count()
     end)
   end
