@@ -38,18 +38,6 @@ defmodule FamilyTree.Storage do
     end)
   end
 
-  def get_all_relationships() do
-    Memento.start()
-
-    Memento.Transaction.execute_sync!(fn ->
-      Memento.Query.all(Relationship)
-      |> Enum.map(& &1.fullname)
-      |> Enum.reduce([], fn x, acc -> [x, x <> "s"] ++ acc end)
-      |> Enum.reverse()
-      |> IO.inspect(label: "Relationship")
-    end)
-  end
-
   def get_person_name({relationship, full_name}) do
     guards = [
       {:==, :second_person, full_name},
@@ -73,8 +61,7 @@ defmodule FamilyTree.Storage do
           Memento.Query.write(%Relationship{fullname: full_name, gender: ""})
 
           Memento.Query.all(Relationship)
-          |> Enum.map(& &1.fullname)
-          |> Enum.join(", ")
+          |> print_names()
           |> IO.inspect(label: "Relationships")
         end)
 
@@ -83,8 +70,7 @@ defmodule FamilyTree.Storage do
           Memento.Query.write(%Person{fullname: full_name, gender: ""})
 
           Memento.Query.all(Person)
-          |> Enum.map(& &1.fullname)
-          |> Enum.join(", ")
+          |> print_names()
           |> IO.inspect(label: "Persons")
         end)
     end
@@ -129,5 +115,11 @@ defmodule FamilyTree.Storage do
     |> Enum.map(&"#{&1.first_person} -- #{&1.relationship} -- #{&1.second_person}")
     |> Enum.join(", ")
     |> IO.inspect(label: "Connections")
+  end
+
+  defp print_names(schema) do
+    schema
+    |> Enum.map(& &1.fullname)
+    |> Enum.join(", ")
   end
 end
