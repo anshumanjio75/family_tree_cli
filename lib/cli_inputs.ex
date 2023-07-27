@@ -34,7 +34,7 @@ defmodule FamilyTree.CLIInputs do
            context[:first_name2]}
 
         IO.puts(
-          "Connected #{context.first_name1} #{last_name1} as #{relationship} in law of #{first_name2} #{last_name2}"
+          "Connected #{context.first_name1}#{last_name1} as #{relationship} in law of #{first_name2}#{last_name2}"
         )
 
         {"#{context.first_name1}#{last_name1}", relationship, "#{first_name2}#{last_name2}"}
@@ -45,7 +45,7 @@ defmodule FamilyTree.CLIInputs do
         {relationship, first_name2, last_name2} = {context[:as], context[:in], context[:law]}
 
         IO.puts(
-          "Connected #{context.first_name1} #{last_name1} as #{relationship} of #{first_name2} #{last_name2}"
+          "Connected #{context.first_name1}#{last_name1} as #{relationship} of #{first_name2} #{last_name2}"
         )
 
         {"#{context.first_name1}#{last_name1}", relationship, "#{first_name2}#{last_name2}"}
@@ -58,7 +58,7 @@ defmodule FamilyTree.CLIInputs do
           {context[:relationship], context[:law], context[:of]}
 
         IO.puts(
-          "Connected #{context.first_name1} #{last_name1} as #{relationship} of #{first_name2} #{last_name2}"
+          "Connected #{context.first_name1}#{last_name1} as #{relationship} of #{first_name2} #{last_name2}"
         )
 
         {"#{context.first_name1}#{last_name1}", relationship, "#{first_name2}#{last_name2}"}

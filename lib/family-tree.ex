@@ -66,7 +66,7 @@ defmodule FamilyTree.CLI do
   end
 
   command :relationship do
-    aliases([:father, :mother, :son, :sons, :daughter, :daughters, :wife, :husband])
+    aliases(Storage.get_realtionship_aliases())
     description("Find relationship person name -- ./family-tree father of <name>")
 
     argument(:of, default: "")
