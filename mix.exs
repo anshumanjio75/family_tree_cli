@@ -9,7 +9,7 @@ defmodule FamilyTree.MixProject do
       escript: [main_module: FamilyTree.CLI],
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      xref: [exclude: [FamilyTree.CLIInputs]]
+      xref: [exclude: [FamilyTree.CLIInputs, FamilyTree.Storage]]
     ]
   end
 

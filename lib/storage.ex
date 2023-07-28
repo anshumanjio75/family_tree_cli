@@ -3,7 +3,7 @@ defmodule FamilyTree.Storage do
   alias FamilyTree.Model.Relationship
   alias FamilyTree.Model.Connection
 
-  def main(_) do
+  def main() do
     nodes = [node()]
     path = Application.get_env(:mnesia, :dir)
 

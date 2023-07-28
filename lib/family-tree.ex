@@ -4,7 +4,7 @@ defmodule FamilyTree.CLI do
   alias FamilyTree.Storage
 
   def main(_var) do
-    Storage.main(nil)
+    Storage.main()
     ExCLI.run!(FamilyTree.CLI)
   end
 
