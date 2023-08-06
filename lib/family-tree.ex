@@ -60,7 +60,9 @@ defmodule FamilyTree.CLI do
 
     run context do
       CLIInputs.process_count_command(context)
-      |> Storage.get_counting()
+      |> get_response()
+      |> List.flatten()
+      |> Enum.count()
       |> IO.inspect(label: "count")
     end
   end
@@ -77,9 +79,26 @@ defmodule FamilyTree.CLI do
       {[relationship | _], full_name} =
         {System.argv(), "#{context[:first_name]}#{context[:last_name]}"}
 
-      {relationship, full_name}
-      |> Storage.get_person_name()
+      get_response({relationship, full_name})
+      |> List.flatten()
+      |> Enum.join(", ")
       |> IO.inspect(label: "name")
+    end
+  end
+
+  def get_response({relationship, full_name}) do
+    case String.split(relationship, "grand") do
+      [relationship | []] ->
+        {relationship, full_name}
+        |> Storage.get_select_query()
+
+      [_ | [relationship | []]] ->
+        {relationship, full_name}
+        |> Storage.get_select_query()
+        |> Enum.map(fn name ->
+          {relationship, name}
+          |> Storage.get_select_query()
+        end)
     end
   end
 end

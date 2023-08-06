@@ -1,5 +1,5 @@
 # FamilyTreeCli
-
+<https://github.com/anshumanjio75/family_tree_cli>
 
 ```elixir
 **Run**
@@ -12,6 +12,12 @@ Add:
 
 Connect:
 ./family-tree connect Amit Dhakad as son of KK Dhakad
+
+./family-tree connect Jhon as son of Amit
+./family-tree connect Sam as son of Jhon
+./family-tree connect Ron as son of Jhon
+./family-tree grandsons of Amit
+./family-tree grandfather of Ron
 
 Query:
 ./family-tree count sons of KK Dhakad

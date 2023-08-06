@@ -18,39 +18,26 @@ defmodule FamilyTree.Storage do
     end
   end
 
-  def get_counting({relationship, full_name}) do
-    Memento.Transaction.execute_sync!(fn ->
-      Memento.Query.all(Connection)
-      |> print_connections()
-
-      Memento.Query.select(Connection, get_select_query({relationship, full_name}))
-      |> Enum.count()
-    end)
-  end
-
-  def get_person_name({relationship, full_name}) do
-    Memento.Transaction.execute_sync!(fn ->
-      Memento.Query.all(Connection)
-      |> print_connections()
-
-      Memento.Query.select(Connection, get_select_query({relationship, full_name}))
-      |> Enum.map(& &1.first_person)
-      |> Enum.join(", ")
-    end)
-  end
-
-  defp get_select_query({relationship, full_name}) do
+  def get_select_query({relationship, full_name}) do
     relationship = relationship |> String.trim_trailing("s")
 
-    if relationship == "children" do
-      {:and, {:==, :second_person, full_name},
-       {:or, {:==, :relationship, "son"}, {:==, :relationship, "daughter"}}}
-    else
-      [
-        {:==, :second_person, full_name},
-        {:==, :relationship, relationship}
-      ]
-    end
+    Memento.Transaction.execute_sync!(fn ->
+      connections = Memento.Query.all(Connection)
+
+      connections
+      |> print_connections()
+
+      connections
+      |> Enum.map(fn %{first_person: fp, relationship: r, second_person: sp} ->
+        cond do
+          sp == full_name && r == relationship -> fp
+          fp == full_name && r == inverse(relationship, full_name) -> sp
+          true -> nil
+        end
+      end)
+      |> Enum.filter(&(!is_nil(&1)))
+      |> Enum.uniq()
+    end)
   end
 
   def add_person_or_relationship({type, full_name}) do
@@ -146,7 +133,10 @@ defmodule FamilyTree.Storage do
       :sister,
       :sisters,
       :childrens,
-      :children
+      :children,
+      :grandfather,
+      :grandson,
+      :grandsons
     ]
   end
 
@@ -166,27 +156,27 @@ defmodule FamilyTree.Storage do
 
   defp inverse(relationship, name) do
     case {relationship, if(p = Memento.Query.read(Person, name), do: p.gender)} do
-      {"father", "m"} -> "son"
       {"father", "f"} -> "daughter"
-      {"son", "m"} -> "father"
+      {"father", _} -> "son"
       {"son", "f"} -> "mother"
+      {"son", _} -> "father"
       {"husband", _} -> "wife"
       {"wife", _} -> "husband"
-      {"mother", "m"} -> "son"
       {"mother", "f"} -> "daughter"
-      {"daughter", "m"} -> "father"
+      {"mother", _} -> "son"
       {"daughter", "f"} -> "mother"
-      {"brother", "m"} -> "brother"
+      {"daughter", _} -> "father"
       {"brother", "f"} -> "sister"
-      {"sister", "m"} -> "brother"
+      {"brother", _} -> "brother"
       {"sister", "f"} -> "sister"
+      {"sister", _} -> "brother"
       _ -> nil
     end
   end
 
   defp print_connections(connections) do
     connections
-    |> Enum.map(&"#{&1.first_person} -- #{&1.relationship} -- #{&1.second_person}")
+    |> Enum.map(&"#{&1.first_person} -is- #{&1.relationship} -of- #{&1.second_person}")
     |> Enum.join(", ")
     |> IO.inspect(label: "Connections")
   end
